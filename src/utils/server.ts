@@ -1,12 +1,14 @@
 import express from "express";
-//import routes from "../routes";
+import userRoutes from "../routes/userRoutes";
+import protectedRoutes from "../routes/protectedRoutes";
 
 function createServer() {
   const app = express();
 
   app.use(express.json());
 
-  //routes(app);
+  app.use('/api', userRoutes);
+  app.use('/api', protectedRoutes);
 
   return app;
 }
