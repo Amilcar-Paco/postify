@@ -15,27 +15,21 @@ export const getAllCategoriesHandler = async (req: Request, res: Response): Prom
 // Create a new category or categories
 export const createCategoryHandler = async (req: Request, res: Response): Promise<void> => {
   try {
-    // Extract category data from the request body
     const categoryData: Category | Category[] = req.body;
 
-    // Check if categoryData is an array
     if (Array.isArray(categoryData)) {
-      // If categoryData is an array, proceed with multiple category creation
       const createdCategories = await Promise.all(categoryData.map(async (data) => {
         const { name, description } = data;
-        const categoryDescription: string | undefined = description as string | undefined; // Adjusted for linting
+        const categoryDescription: string | undefined = description as string | undefined;
         return createCategory(name, categoryDescription);
       }));
 
-      // Send the array of created categories in the response
       res.status(201).json(createdCategories);
     } else {
-      // If categoryData is not an array, proceed with single category creation
       const { name, description } = categoryData;
-      const categoryDescription: string | undefined = description as string | undefined; // Adjusted for linting
+      const categoryDescription: string | undefined = description as string | undefined;
       const createdCategory = await createCategory(name, categoryDescription);
 
-      // Send the created category in the response
       res.status(201).json(createdCategory);
     }
   } catch (error: any) {
