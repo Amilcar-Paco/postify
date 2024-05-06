@@ -2,29 +2,37 @@ import { PrismaClient } from '@prisma/client';
 import { Post } from '../../types/Post';
 
 const prisma = new PrismaClient();
+
 /*
 // Create a new post
-export const createPost = async (post: Post): Promise<Post> => {
+const createPost = async (post: Omit<Post, 'id'>): Promise<Post> => {
   try {
-    const postData: Post = {
-      title: post.title,
-      text: post.text,
-      imageUrl: post.imageUrl,
-      categoryId: post.category ? post.category.id : undefined,
-     // createdAt: undefined
-    };
-
-    const createdPost = await prisma.post.create({
-      data: postData,
-    });
-    return createdPost;
+      const createdPost = await prisma.post.create({
+          data: {
+              title: post.title,
+              text: post.text || null,
+              imageUrl: post.imageUrl || null,
+              categoryId: post.categoryId || null,
+          },
+      });
+      return createdPost;
   } catch (error: any) {
-    throw new Error(`Error creating post: ${error.message}`);
+      throw new Error(`Error creating post: ${error.message}`);
+  }
+};
+*/
+// Get all posts
+const getAllPosts = async (): Promise<Post[]> => {
+  try {
+    const posts = await prisma.post.findMany();
+    return posts;
+  } catch (error: any) {
+    throw new Error(`Error fetching posts: ${error.message}`);
   }
 };
 
 // Get a post by ID
-export const getPostById = async (postId: number): Promise<Post | null> => {
+const getPostById = async (postId: number): Promise<Post | null> => {
   try {
     const post = await prisma.post.findUnique({
       where: {
@@ -38,13 +46,13 @@ export const getPostById = async (postId: number): Promise<Post | null> => {
 };
 
 // Update a post
-export const updatePost = async (postId: number, updatedPostData: Post): Promise<Post | null> => {
+const updatePost = async (postId: number, post: Partial<Post>): Promise<Post | null> => {
   try {
     const updatedPost = await prisma.post.update({
       where: {
         id: postId,
       },
-      data: updatedPostData,
+      data: post,
     });
     return updatedPost;
   } catch (error: any) {
@@ -53,7 +61,7 @@ export const updatePost = async (postId: number, updatedPostData: Post): Promise
 };
 
 // Delete a post
-export const deletePost = async (postId: number): Promise<void> => {
+const deletePost = async (postId: number): Promise<void> => {
   try {
     await prisma.post.delete({
       where: {
@@ -64,4 +72,5 @@ export const deletePost = async (postId: number): Promise<void> => {
     throw new Error(`Error deleting post: ${error.message}`);
   }
 };
-*/
+
+export { getAllPosts, getPostById, updatePost, deletePost };

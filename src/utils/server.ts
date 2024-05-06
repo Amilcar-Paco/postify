@@ -1,6 +1,6 @@
 import express from "express";
 import userRoutes from "../routes/userRoutes";
-import protectedRoutes from "../routes/protectedRoutes";
+//import protectedRoutes from "../routes/protectedRoutes";
 import categoryRouter from "../routes/categoryRoutes";
 
 function createServer() {
