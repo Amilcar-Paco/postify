@@ -3,6 +3,21 @@ import { Category } from '../../types/Category';
 
 const prisma = new PrismaClient();
 
+// Get all categories
+const getAllCategories = async (): Promise<Category[]> => {
+  try {
+    const categories = await prisma.category.findMany({
+      include: {
+        posts: true,
+      },
+    });
+    return categories;
+  } catch (error: any) {
+    throw new Error(`Error fetching categories: ${error.message}`);
+  }
+};
+
+
 // Create a new category
 const createCategory = async (name: string, description?: string): Promise<Category> => {
     try {
@@ -75,4 +90,4 @@ const deleteCategory = async (categoryId: number): Promise<void> => {
   }
 };
 
-export { createCategory, getCategoryById, updateCategory, deleteCategory };
+export { getAllCategories, createCategory, getCategoryById, updateCategory, deleteCategory };

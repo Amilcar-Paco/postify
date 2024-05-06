@@ -1,6 +1,16 @@
 import { Request, Response } from 'express';
-import { createCategory, getCategoryById, updateCategory, deleteCategory } from '../services/CategoryService';
+import { createCategory, getCategoryById, updateCategory, deleteCategory, getAllCategories } from '../services/CategoryService';
 import { Category } from '../../types/Category';
+
+// Get all categories
+export const getAllCategoriesHandler = async (req: Request, res: Response): Promise<void> => {
+    try {
+      const categories = await getAllCategories();
+      res.status(200).json(categories);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  };
 
 // Create a new category
 export const createCategoryHandler = async (req: Request, res: Response): Promise<void> => {
