@@ -9,7 +9,6 @@ export interface Post {
     text?: string | null;
     imageUrl?: string | null;
     createdAt: Date;
-    category?: Category | null;
-    categoryId?: number | null;
+    categoryId: number | null;
   }  
 

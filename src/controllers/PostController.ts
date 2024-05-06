@@ -1,7 +1,7 @@
 // controllers/PostController.ts
 
 import { Request, Response } from 'express';
-import { getPostById, updatePost, deletePost, getAllPosts } from '../services/PostService';
+import { getPostById, getAllPosts, updatePost, createPost } from '../services/PostService';
 import { Post } from '../../types/Post';
 
 // Get all posts
@@ -13,19 +13,19 @@ export const getAllPostsHandler = async (req: Request, res: Response): Promise<v
       res.status(500).json({ message: error.message });
     }
   };
-/*
+
 // Create a new post
 export const createPostHandler = async (req: Request, res: Response): Promise<void> => {
-  const { title, text, imageUrl, categoryId } = req.body;
+  const { title, categoryId, text, imageUrl, category } = req.body;
 
   try {
-    const post: Post = await createPost({ title, text, imageUrl, categoryId });
+    const post: Omit<Post, 'id'> = await createPost( title, categoryId, text, imageUrl, category );
     res.status(201).json(post);
   } catch (error: any) {
     res.status(500).json({ message: error.message });
   }
 };
-*/
+
 // Get a post by ID
 export const getPostByIdHandler = async (req: Request, res: Response): Promise<void> => {
   const postId: number = parseInt(req.params.id);
