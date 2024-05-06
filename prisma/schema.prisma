@@ -19,7 +19,7 @@ model User {
   email       String    @unique
   password    String
   createdAt   DateTime  @default(now())
-  posts       Post[]
+  //posts       Post[]
   // Add other fields as needed
 }
 
@@ -38,8 +38,8 @@ model Post {
   text        String?
   imageUrl    String?
   createdAt   DateTime  @default(now())
-  author      User      @relation(fields: [authorId], references: [id])
-  authorId    Int
+//  author      User      @relation(fields: [authorId], references: [id])
+  //authorId    Int
   category    Category? @relation(fields: [categoryId], references: [id])
   categoryId  Int?
   // Add other fields as needed
