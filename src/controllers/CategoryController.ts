@@ -14,29 +14,34 @@ export const getAllCategoriesHandler = async (req: Request, res: Response): Prom
 
 // Create a new category or categories
 export const createCategoryHandler = async (req: Request, res: Response): Promise<void> => {
-    const categoryData: Category[] = req.body;
-  
-    try {
-      // Create an array to store the created categories
-      const createdCategories: Category[] = [];
-  
-      // Iterate over each category object in the request body
-      for (const data of categoryData) {
+  try {
+    // Extract category data from the request body
+    const categoryData: Category | Category[] = req.body;
+
+    // Check if categoryData is an array
+    if (Array.isArray(categoryData)) {
+      // If categoryData is an array, proceed with multiple category creation
+      const createdCategories = await Promise.all(categoryData.map(async (data) => {
         const { name, description } = data;
-  
-        const categoryDescription: string | undefined = description as string | undefined;
-  
-        // Create the category and push it to the createdCategories array
-        const category: Category = await createCategory(name, categoryDescription);
-        createdCategories.push(category);
-      }
-  
+        const categoryDescription: string | undefined = description as string | undefined; // Adjusted for linting
+        return createCategory(name, categoryDescription);
+      }));
+
       // Send the array of created categories in the response
       res.status(201).json(createdCategories);
-    } catch (error: any) {
-      res.status(500).json({ message: error.message });
+    } else {
+      // If categoryData is not an array, proceed with single category creation
+      const { name, description } = categoryData;
+      const categoryDescription: string | undefined = description as string | undefined; // Adjusted for linting
+      const createdCategory = await createCategory(name, categoryDescription);
+
+      // Send the created category in the response
+      res.status(201).json(createdCategory);
     }
-  };
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
+};
   
 
 // Get a category by ID
