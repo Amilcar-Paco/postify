@@ -12,17 +12,32 @@ export const getAllCategoriesHandler = async (req: Request, res: Response): Prom
     }
   };
 
-// Create a new category
+// Create a new category or categories
 export const createCategoryHandler = async (req: Request, res: Response): Promise<void> => {
-  const { name, description } = req.body;
-
-  try {
-    const category: Category = await createCategory(name, description);
-    res.status(201).json(category);
-  } catch (error: any) {
-    res.status(500).json({ message: error.message });
-  }
-};
+    const categoryData: Category[] = req.body;
+  
+    try {
+      // Create an array to store the created categories
+      const createdCategories: Category[] = [];
+  
+      // Iterate over each category object in the request body
+      for (const data of categoryData) {
+        const { name, description } = data;
+  
+        const categoryDescription: string | undefined = description as string | undefined;
+  
+        // Create the category and push it to the createdCategories array
+        const category: Category = await createCategory(name, categoryDescription);
+        createdCategories.push(category);
+      }
+  
+      // Send the array of created categories in the response
+      res.status(201).json(createdCategories);
+    } catch (error: any) {
+      res.status(500).json({ message: error.message });
+    }
+  };
+  
 
 // Get a category by ID
 export const getCategoryByIdHandler = async (req: Request, res: Response): Promise<void> => {
