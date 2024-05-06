@@ -1,7 +1,7 @@
 // controllers/PostController.ts
 
 import { Request, Response } from 'express';
-import { getPostById, getAllPosts, updatePost, createPost } from '../services/PostService';
+import { getPostById, getAllPosts, updatePost, createPost, deletePost } from '../services/PostService';
 import { Post } from '../../types/Post';
 
 // Get all posts
@@ -61,4 +61,12 @@ export const updatePostHandler = async (req: Request, res: Response): Promise<vo
 
 // Delete a post
 export const deletePostHandler = async (req: Request, res: Response): Promise<void> => {
+  const categoryId: number = parseInt(req.params.id);
+
+  try {
+    await deletePost(categoryId);
+    res.status(204).send();
+  } catch (error: any) {
+    res.status(500).json({ message: error.message });
+  }
 }
