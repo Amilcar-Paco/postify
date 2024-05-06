@@ -45,6 +45,7 @@ const getPostById = async (postId: number): Promise<Post | null> => {
   }
 };
 
+/*
 // Update a post
 const updatePost = async (postId: number, post: Partial<Post>): Promise<Post | null> => {
   try {
@@ -59,7 +60,7 @@ const updatePost = async (postId: number, post: Partial<Post>): Promise<Post | n
     throw new Error(`Error updating post: ${error.message}`);
   }
 };
-
+*/
 // Delete a post
 const deletePost = async (postId: number): Promise<void> => {
   try {
