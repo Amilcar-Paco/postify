@@ -1,7 +1,7 @@
 // controllers/PostController.ts
 
 import { Request, Response } from 'express';
-import { createPost, getPostById, updatePost, deletePost, getAllPosts } from '../services/PostService';
+import { getPostById, updatePost, deletePost, getAllPosts } from '../services/PostService';
 import { Post } from '../../types/Post';
 
 // Get all posts
